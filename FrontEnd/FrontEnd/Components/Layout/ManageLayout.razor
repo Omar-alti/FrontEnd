@@ -7,7 +7,7 @@
     <div class="container">
 
         <aside>
-            <partial name="~/Views/Account/_AccountProfile.cshtml" />
+            <FrontEnd.Components.Sections.AccountProfileAvatar user="user" />
             <ManageNavMenu />
         </aside>
         <div class="content">
@@ -15,3 +15,24 @@
         </div>
     </div>
 </section>
+
+@code {
+    @code {
+        [CascadingParameter]
+        private ApplicationUser user { get; set; } = default!;
+
+        [CascadingParameter]
+        private HttpContext HttpContext { get; set; } = default!;
+
+        protected override async Task OnInitializedAsync()
+        {
+            await LoadUserDataAsync();
+        }
+
+        private async Task LoadUserDataAsync()
+        {
+            user = await UserManager.GetUserAsync(HttpContext.User) ?? null!;
+            
+        }
+    }
+}
